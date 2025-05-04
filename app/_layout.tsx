@@ -1,29 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+//import * as Updates from 'expo-updates';
+import { useEffect, useState } from 'react';
+import { I18nManager } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { Provider as StoreProvider } from 'react-redux';
+import i18next from '../locales/config';
+import { store } from '../rtk/store';
+import { DarkTheme, LightTheme } from '../theme/ThemeConfig';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const setAppDirection = (language: string) => {
+    const isRTL = language === 'ar';
+
+    if (I18nManager.isRTL !== isRTL) {
+        I18nManager.forceRTL(isRTL);
+        I18nManager.allowRTL(isRTL);
+
+        // Reload the app to apply the changes
+        // if (!__DEV__ && Platform.OS !== 'web') {
+        //     Updates.reloadAsync();
+        // }
+    }
+};
+
+// Set initial direction based on the current language
+setAppDirection(i18next.language);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+    // Automatically detect system theme
+    const [appTheme, setAppTheme] = useState<string>('light');
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+    useEffect(() => {
+        console.log(`Current theme: ${appTheme}`);
+    }, [appTheme]);
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    return (
+        <StoreProvider store={store}>
+            <PaperProvider theme={appTheme === 'dark' ? DarkTheme : LightTheme}>
+                <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name='(tabs)' />
+                </Stack>
+            </PaperProvider>
+        </StoreProvider>
+    );
 }

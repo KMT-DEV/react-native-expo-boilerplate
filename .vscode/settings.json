@@ -3,5 +3,8 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "marquee.widgets.npm-stats.packageNames": [
+    "react-native-expo-boilerplate"
+  ]
 }
