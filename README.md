@@ -1,6 +1,6 @@
 # Welcome React Native Expo boilerplate 👋
 
-# Version 1.0.0
+# Version 1.1.0
 
 ## Get started
 
@@ -30,6 +30,7 @@ You can start developing by editing the files inside the **app** directory. This
 -   React Expo Router
 -   Expo Tab Navigation
 -   State management using Redux Toolkit
+    -   Add custom Redux Debugger (New)
 -   Localization using i18next
 -   React Native Paper
     -   -   Themes Configuration (Light/Dark)
